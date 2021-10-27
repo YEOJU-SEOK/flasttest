@@ -14,7 +14,7 @@ def create_app():
     # config.py의 내용을 app.config 환경변수로 부르기위해 아래코드¥추가
     app.config.from_object(config)
 
-    #ORM
+    # ORM
     db.init_app(app)
     migrate.init_app(app, db)
     from . import models
