@@ -19,3 +19,9 @@ class UserCreateForm(FlaskForm):
     password2 = PasswordField('비밀번호 확인', validators=[DataRequired()])
     # Email() 검증조건은 해당 속성의 값이 이메일형식과 일치하는지를 검증
     email = EmailField('이메일', validators=[DataRequired(), Email()])
+
+
+class UserLoginForm(FlaskForm):
+    username = StringField('사용자이름', validators=[DataRequired(), Length(min=3, max=25)])
+    password = PasswordField('비밀번호 확인', validators=[DataRequired()])
+
