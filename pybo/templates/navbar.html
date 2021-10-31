@@ -6,6 +6,7 @@
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse flex-grow-0" id="navbarNav">
+
         {% if g.user %}
         <ul class="navbar-nav">
             <li class="nav-item ">
@@ -13,6 +14,7 @@
             </li>
         </ul>
         {% else %}
+
         <ul class="navbar-nav">
             <li class="nav-item ">
                 <!--회원가입 가능한 "{{ url_for('auth.signup') }}"링크 추가-->
