@@ -9,7 +9,7 @@ db = SQLAlchemy()
 migrate = Migrate()
 
 
-#플라스크 애플리케이션을 생성하는 코드 '__name__'에는 모듈명이 담김 -> pybo.py라서 pybo
+# 플라스크 애플리케이션을 생성하는 코드 '__name__'에는 모듈명이 담김 -> pybo.py라서 pybo
 def create_app():
     app = Flask(__name__)
     # config.py의 내용을 app.config 환경변수로 부르기위해 아래코드¥추가

@@ -26,7 +26,6 @@
     </div>
     {% endfor %}
     <form action="{{ url_for('answer.create', question_id=question.id) }}" method="post" class="my-3">
-        <!-- CSRF토큰과 오류 표시기능추가 -->
         {{ form.csrf_token }}
         <!-- 오류표시 Start -->
         {% for field, errors in form.errors.items() %}
@@ -42,4 +41,3 @@
     </form>
 </div>
 {% endblock %}
-

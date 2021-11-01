@@ -1,3 +1,5 @@
+
+
 {% extends 'base.html' %}
 {% block content %}
 <div class="container my-3">
@@ -10,26 +12,24 @@
         </tr>
         </thead>
         <tbody>
-            {% if question_list %}
-            <!--Pagination객체는 현재 조회된 목록데이터를 가져오기 위해서는 items 함수를 호출해야 한다-->
-            {% for question in question_list.items %}
-            <tr>
-                <!-- 번호 = 전체 게시물 개수 - (현재 페이지 - 1) * 페이지당 게시물 개수 - 나열 인덱스 -->
-                <td>{{ question_list.total - ((question_list.page-1) * question_list.per_page) - loop.index0 }}</td>
-                <td>
-                    <a href="{{ url_for('question.detail', question_id=question.id) }}">{{ question.subject }}</a>
-                    {% if question.answer_set|length > 0 %}
-                    <span class="text-danger small ml-2">{{ question.answer_set|length }}</span>
-                    {% endif %}
-                </td>
-                <td>{{ question.create_date|datetime }}</td>
-            </tr>
-            {% endfor %}
-            {% else %}
-            <tr>
-                <td colspan="3">질문이 없습니다.</td>
-            </tr>
-            {% endif %}
+        {% if question_list %}
+        {% for question in question_list.items %}
+        <tr>
+            <td>{{ question_list.total - ((question_list.page-1) * question_list.per_page) - loop.index0 }}</td>
+            <td>
+                <a href="{{ url_for('question.detail', question_id=question.id) }}">{{ question.subject }}</a>
+                {% if question.answer_set|length > 0 %}
+                <span class="text-danger small ml-2">{{ question.answer_set|length }}</span>
+                {% endif %}
+            </td>
+            <td>{{ question.create_date|datetime }}</td>
+        </tr>
+        {% endfor %}
+        {% else %}
+        <tr>
+            <td colspan="3">질문이 없습니다.</td>
+        </tr>
+        {% endif %}
         </tbody>
     </table>
     <!-- 페이징처리 시작 -->
@@ -73,7 +73,6 @@
         {% endif %}
     </ul>
     <!-- 페이징처리 끝 -->
-
     <a href="{{ url_for('question.create') }}" class="btn btn-primary">질문 등록하기</a>
 </div>
 {% endblock %}
