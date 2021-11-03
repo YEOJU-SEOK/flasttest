@@ -15,9 +15,6 @@ naming_convention = {
 db = SQLAlchemy(metadata=MetaData(naming_convention=naming_convention))
 migrate = Migrate()
 
-db = SQLAlchemy()
-migrate = Migrate()
-
 
 def create_app():
     app = Flask(__name__)
