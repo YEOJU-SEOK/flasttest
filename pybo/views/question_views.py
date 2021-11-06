@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from flask import Blueprint, render_template, request, url_for, g
+from flask import Blueprint, render_template, request, url_for, g, flash
 from werkzeug.utils import redirect
 
 from .. import db
@@ -37,3 +37,35 @@ def create():
         db.session.commit()
         return redirect(url_for('main.index'))
     return render_template('question/question_form.html', form=form)
+
+
+@bp.route('/modify/<int:question_id>', methods=('GET', 'POST'))
+@login_required
+def modify(question_id):
+    question = Question.query.get_or_404(question_id)
+    if g.user != question.user:
+        flash('수정권한이 없습니다')
+        return redirect(url_for('question.detail', question_id=question_id))
+    if request.method == 'POST': # 포스트 요청
+        form = QuestionForm()
+        if form.validate_on_submit():
+            form.populate_obj(question)
+            question.modify_date = datetime.now()
+            db.session.commit()
+            return redirect(url_for('question.detail', question_id=question_id))
+    else:
+        # DB 조회데이터를 템플릿에 적용하는 가장 간단한 방법: 조회한 데이터를 obj 매개변수에 전달하여 폼을 생성하는 것
+        form = QuestionForm(obj=question)
+    return render_template('question/question_form.html', form=form)
+
+
+@bp.route('/delete/<int:question_id>')
+@login_required
+def delete(question_id):
+    question = Question.query.get_or_404(question_id)
+    if g.user != question.user:
+        flash('삭제권한이 없습니다')
+        return redirect(url_for('question.detail', question_id=question_id))
+    db.session.delete(question)
+    db.session.commit()
+    return redirect(url_for('question._list'))
