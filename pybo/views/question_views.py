@@ -46,11 +46,11 @@ def modify(question_id):
     if g.user != question.user:
         flash('수정권한이 없습니다')
         return redirect(url_for('question.detail', question_id=question_id))
-    if request.method == 'POST': # 포스트 요청
+    if request.method == 'POST':  # POST 요청
         form = QuestionForm()
         if form.validate_on_submit():
             form.populate_obj(question)
-            question.modify_date = datetime.now()
+            question.modify_date = datetime.now()  # 수정일시 저장
             db.session.commit()
             return redirect(url_for('question.detail', question_id=question_id))
     else:
