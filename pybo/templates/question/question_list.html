@@ -5,6 +5,7 @@
         <thead>
         <tr class="text-center thead-dark">
             <th>번호</th>
+            <th>추천</th>
             <th style="width:50%">제목</th>
             <th>글쓴이</th>
             <th>작성일시</th>
@@ -18,6 +19,11 @@
             <td>
                 <a href="{{ url_for('question.detail', question_id=question.id) }}">{{ question.subject }}</a>
                 {% if question.answer_set|length > 0 %}
+                <td>
+                    {% if question.voter|length > 0 %}
+                    <span class="badge badge-warning px-2 py-1">{{ question.voter|length }}</span>
+                    {% endif %}
+                </td>
                 <span class="text-danger small ml-2">{{ question.answer_set|length }}</span>
                 {% endif %}
             </td>
