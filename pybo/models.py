@@ -1,5 +1,16 @@
 from pybo import db
 
+# 계정과 질문을 한쌍으로 갖는 테이블로 계정&질문 둘다 primarykey -> Many To Many)
+question_voter = db.Table('question_voter',
+                          db.Column('user_id', db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'), primary_key=True),
+                          db.Column('question_id', db.Integer, db.ForeignKey('question.id', ondelete='CASCADE'), primary_key=True)
+                          )
+
+answer_voter = db.Table('answer_voter',
+                        db.Column('user_id', db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'), primary_key=True),
+                        db.Column('answer_id', db.Integer, db.ForeignKey('answer.id', ondelete='CASCADE'), primary_key=True)
+                        )
+
 
 class Question(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -9,6 +20,8 @@ class Question(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'), nullable=False)
     user = db.relationship('User', backref=db.backref('question_set'))
     modify_date = db.Column(db.DateTime(), nullable=True)
+    # secondary는 voter MTM관계이며 question_voter를 참조한다는걸 알려주는 역할
+    voter = db.relationship('User', secondary=question_voter, backref=db.backref('question_voter_set'))
 
 
 class Answer(db.Model):
@@ -20,6 +33,7 @@ class Answer(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'), nullable=False)
     user = db.relationship('User', backref=db.backref('answer_set'))
     modify_date = db.Column(db.DateTime(), nullable=True)
+    voter = db.relationship('User', secondary=answer_voter, backref=db.backref('answer_voter_set'))
 
 
 class User(db.Model):
