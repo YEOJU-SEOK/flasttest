@@ -14,27 +14,26 @@
         <tbody>
         {% if question_list %}
         {% for question in question_list.items %}
-        <tr>
+        <tr class="text-center">
             <td>{{ question_list.total - ((question_list.page-1) * question_list.per_page) - loop.index0 }}</td>
             <td>
+                {% if question.voter|length > 0 %}
+                <span class="badge badge-warning px-2 py-1">{{ question.voter|length }}</span>
+                {% endif %}
+            </td>
+            <td class="text-left">
                 <a href="{{ url_for('question.detail', question_id=question.id) }}">{{ question.subject }}</a>
                 {% if question.answer_set|length > 0 %}
-                <td>
-                    {% if question.voter|length > 0 %}
-                    <span class="badge badge-warning px-2 py-1">{{ question.voter|length }}</span>
-                    {% endif %}
-                </td>
                 <span class="text-danger small ml-2">{{ question.answer_set|length }}</span>
                 {% endif %}
             </td>
-            <td>{{ question.user.username }}</td>
+            <td>{{ question.user.username }}</td>  <!-- 글쓴이 추가 -->
             <td>{{ question.create_date|datetime }}</td>
         </tr>
         {% endfor %}
         {% else %}
         <tr>
             <td colspan="3">질문이 없습니다.</td>
-        </tr>
         </tr>
         {% endif %}
         </tbody>
