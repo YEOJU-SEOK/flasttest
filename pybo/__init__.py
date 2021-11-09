@@ -1,4 +1,5 @@
 from flask import Flask
+from flaskext.markdown import Markdown
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import MetaData
@@ -42,5 +43,9 @@ def create_app():
     # 필터
     from .filter import format_datetime
     app.jinja_env.filters['datetime'] = format_datetime
+
+    # markdown
+    # nl2br은 줄바꿈 문자를 <br>로 바꿔 줌. fenced_code는 코드 표시 기능을 위해 추가
+    Markdown(app, extensions=['nl2br', 'fenced_code'])
 
     return app
