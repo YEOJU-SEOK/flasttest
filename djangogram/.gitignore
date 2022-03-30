@@ -326,3 +326,5 @@ tags
 djangogram/media/
 
 .pytest_cache/
+
+config/
