@@ -1,0 +1,84 @@
+body {
+    background-color: #fafafa;
+    display: flex;
+    flex-direction: column;
+}
+
+.content {
+    margin-top: 170px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* main.html & signup.html css * /
+
+/* display flex -> flex-direction column하면 세로 정렬됨 */
+.auth {
+    background-color: white;
+    width: 350px;
+    height: 300px;
+    border: 1px solid #efefef;
+    display: flex;
+    flex-direction: column;
+}
+
+.auth form {
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+    margin: auto;
+}
+
+.auth form input {
+  margin-bottom: 10px;
+}
+
+
+.auth form input:last-child {
+  margin-top: 10px;
+}
+
+/* auth_link */
+.auth_link {
+  background-color: white;
+  border: 1px solid #efefef;
+  margin-top: 20px;
+  width: 150px;
+  height: 25px;
+  text-align: center;
+}
+
+/* footer */
+footer {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+footer .list {
+    margin: auto;
+}
+
+footer ul {
+    display: flex;
+    flex-direction: row;
+    list-style: none;
+}
+
+footer ul li {
+  margin: 10px;
+}
+
+footer ul li a {
+    color: #00376b;
+    text-decoration: none;
+}
+
+footer .company {
+    margin: auto;
+}
