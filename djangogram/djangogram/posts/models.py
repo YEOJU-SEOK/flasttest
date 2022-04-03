@@ -16,9 +16,13 @@ class TimeStamedModel(models.Model):
 # 포스트 관리db
 class Post(TimeStamedModel):
     author = models.ForeignKey(user_model.User, null=True, on_delete=models.CASCADE, related_name='comment_author')
-    image = models.ImageField(blank=True)
-    caption = models.TextField(blank=True)
-    image_likes = models.ManyToManyField(user_model.User, related_name='post_like')
+    image = models.ImageField(blank=False)
+    caption = models.TextField(blank=False)
+    image_likes = models.ManyToManyField(user_model.User, blank=True, related_name='post_like')
+
+    # 데이터 구분이 가능하도록 추가
+    def __str__(self):
+        return f"{self.author}:{self.caption}"
 
 
 # 댓글 관리db
@@ -26,3 +30,6 @@ class Comment(TimeStamedModel):
     author = models.ForeignKey(user_model.User, null=True, on_delete=models.CASCADE, related_name='post_author')
     posts = models.ForeignKey(Post, null=True, on_delete=models.CASCADE, related_name='comment_post')
     comments = models.TextField(blank=True)
+
+    def __str__(self):
+        return f"{self.author}:{self.comments}"

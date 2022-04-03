@@ -13,9 +13,10 @@ class UserAdmin(auth_admin.UserAdmin):
 
     form = UserAdminChangeForm
     add_form = UserAdminCreationForm
+    # admin 페이지에서 사용자 수정할때 입력폼
     fieldsets = (
         (None, {"fields": ("username", "password")}),
-        (_("Personal info"), {"fields": ("name", "email")}),
+        (_("Personal info"), {"fields": ("name", "email", "following")}),
         (
             _("Permissions"),
             {

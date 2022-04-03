@@ -25,6 +25,7 @@ class User(AbstractUser):
     phone_number = models.CharField(blank=True, max_length=255)
     gender = models.CharField(blank=True, choices=GENDER_CHOICES, max_length=255)
     followers = models.ManyToManyField('self')
+    following = models.ManyToManyField('self')
 
     def get_absolute_url(self):
         """Get url for user's detail view.
