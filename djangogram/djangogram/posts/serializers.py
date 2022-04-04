@@ -24,4 +24,4 @@ class PostSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Post
         # 추출하고자 하는 필드
-        fields = ("id", "image", "caption", "author", "comment_post")
+        fields = ("id", "image", "caption", "author", "comment_post", "image_likes", )

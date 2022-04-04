@@ -20,4 +20,9 @@ urlpatterns = [
 
     # /posts/1/comment_delete/
     path('<int:comment_id>/comment_delete/', views.comment_delete, name='comment_delete'),
+    
+    # /posts/1/post_like/
+    path('<int:post_id>/post_like/', views.post_like, name='post_like '),
+
+
 ]
