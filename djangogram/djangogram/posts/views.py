@@ -4,7 +4,7 @@ from django.urls import reverse
 from djangogram.users.models import User as user_model
 
 from . import models, serializers
-from .forms import CreatePostForm, CommentForm
+from .forms import CreatePostForm, CommentForm, UpdatePostForm
 # Create your views here.
 
 # db에서 포스트만 추출
@@ -16,7 +16,7 @@ def index(request):
     if request.method == "GET":
         user = get_object_or_404(user_model, pk=request.user.id)
         following = user.following.all()
-        posts = models.Post.objects.filter(Q(author__in=following) | Q(author=user))
+        posts = models.Post.objects.filter(Q(author__in=following) | Q(author=user)).order_by("-created_at")
 
         serializer = serializers.PostSerializer(posts, many=True)
         form = CommentForm()
@@ -45,10 +45,47 @@ def post_create(request):
                 post.save()
             else:
                 print(form.errors)
-
-            return render(request, 'posts/main.html')
+            return redirect(reverse('posts:index'))
         else:
             return render(request, 'users/main.html')
+
+
+def post_update(request, post_id):
+    if request.user.is_authenticated:
+        # 작성자 체크
+        post = get_object_or_404(models.Post, pk=post_id)
+        if request.user != post.author:
+            return redirect(reverse('posts:index'))
+
+        # GET 요청
+        if request.method == 'GET':
+            form = UpdatePostForm(instance=post)
+            return render(
+                request,
+                'posts/post_update.html',
+                {"form": form, "post": post}
+            )
+
+        elif request.method == 'POST':
+            # 업데이트 버튼 클릭 후 저장을 위한 POST api 요청 로직
+            form = UpdatePostForm(request.POST)
+            if form.is_valid():
+                post.caption = form.cleaned_data['caption']
+                post.save()
+            return redirect(reverse('posts:index'))
+
+    else:
+        return render(request, 'users/main.html')
+
+
+def post_delete(request, post_id):
+    if request.user.is_authenticated:
+        post = get_object_or_404(models.Post, pk=post_id)
+        if request.user == post.author:
+            post.delete()
+        return redirect(reverse('posts:index'))
+    else:
+        return render(request, 'users/main.html')
 
 
 def comment_create(request, post_id):
@@ -66,3 +103,14 @@ def comment_create(request, post_id):
 
         else:
             return render(request, 'users/main.html')
+
+
+def comment_delete(request, comment_id):
+    if request.user.is_authenticated:
+        comment = get_object_or_404(models.Comment, pk=comment_id)
+        if request.user == comment.author:
+            comment.delete()
+        return redirect(reverse('posts:index'))
+
+    else:
+        return render(request, 'users/main.html')
